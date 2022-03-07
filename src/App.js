@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Tile from "./components/Tile.js";
+import Landing from "./components/Landing.js";
 
-function App() {
+export default function App() {
+  const [landing, setLanding] = React.useState(true);
+  const [cards, setCards] = React.useState([
+    { num: 1 },
+    { num: 2 },
+    { num: 2 },
+  ]);
+
+  const handleLanding = () => {
+    setLanding(false);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {landing ? <Landing handleLanding={handleLanding} /> : <Tile></Tile>}
     </div>
   );
 }
-
-export default App;
