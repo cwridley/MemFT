@@ -4,11 +4,6 @@ import Landing from "./components/Landing.js";
 
 export default function App() {
   const [landing, setLanding] = React.useState(true);
-  const [cards, setCards] = React.useState([
-    { num: 1 },
-    { num: 2 },
-    { num: 2 },
-  ]);
 
   const handleLanding = () => {
     setLanding(false);
