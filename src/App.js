@@ -1,5 +1,5 @@
 import React from "react";
-import Tile from "./components/Tile.js";
+import Card from "./components/Card.js";
 import Landing from "./components/Landing.js";
 
 export default function App() {
@@ -11,7 +11,7 @@ export default function App() {
 
   return (
     <div className="App">
-      {landing ? <Landing handleLanding={handleLanding} /> : <Tile></Tile>}
+      {landing ? <Landing handleLanding={handleLanding} /> : <Card></Card>}
     </div>
   );
 }
