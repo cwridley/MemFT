@@ -15,7 +15,7 @@ const CardContainer = styled.div`
   margin: auto;
 
   ${(props) =>
-    props.front &&
+    (props.front || props.match) &&
     css`
       background-image: url(${props.img});
       background-color: white;
@@ -30,6 +30,7 @@ export default function Card(props) {
       <CardContainer
         id={props.id}
         front={props.front}
+        match={props.match}
         img={props.img}
         onClick={(Event) => {
           props.handleClick(Event);

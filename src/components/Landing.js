@@ -56,39 +56,64 @@ export default function Landing(props) {
     });
   });
 
-  const [remains, setRemains] = React.useState(() => {
-    return [...Array(14).keys()];
-  });
-  // use UseEffect to keep the cards and remains state variables in sync
-  // every time the cards state changes make sure the remains variable reflects the change
-  React.useEffect(() => playGame(remains), []); //dependencies array will be cards (too spammy without timeout)
+  const [memory, setMemory] = React.useState([]);
 
-  function playGame(remains) {
+  React.useEffect(() => {
+    setTimeout(() => {
+      for (let i = 0; i < cards.length; i++) {
+        const card = cards[i];
+        if (card.front && !card.match) {
+          return endTurn(cards);
+        }
+      }
+      playGame(cards);
+    }, 1000); // 1s seems to be a nice amount of time
+  }, [cards]); //dependencies array will be cards (w/out memory it is awful to watch)
+
+  function endTurn() {
+    setCards((oldCards) => {
+      return oldCards.map((card) => {
+        return { ...card, front: card.match ? true : false };
+      });
+    });
+  }
+
+  function playGame(cards) {
+    const remains = [];
+    for (let i = 0; i < cards.length; i++) {
+      let card = cards[i];
+      if (!card.match) {
+        remains.push(card);
+      }
+    }
     const cardsLeft = remains.length;
     if (cardsLeft === 0) return;
+
     //for the cards that don't have a match pick 2
-    const picks = [...Array(2)].map((x) => {
-      return remains[Math.floor(Math.random() * cardsLeft)];
-    });
-    // if picks match generate a new second pick
+    const picks = [];
     do {
-      picks[1] = remains[Math.floor(Math.random() * cardsLeft)];
+      for (let i = 0; i < 2; i++) {
+        picks[i] = remains[Math.floor(Math.random() * cardsLeft)];
+      }
     } while (picks[0] === picks[1]);
 
-    //set state so that two pick are face up
+    //set state so that the two pick are face up
     setCards((oldCards) => {
       return oldCards.map((card) => {
         return {
           ...card,
           front:
-            card.id === picks[0] || card.id === picks[1]
+            card.id === picks[0].id || card.id === picks[1].id
               ? !card.front
               : card.front,
+          match:
+            (card.id === picks[0].id || card.id === picks[1].id) &&
+            picks[0].matchId === picks[1].matchId
+              ? !card.match
+              : card.match,
         };
       });
     });
-    //if cards match - set match to true (they should remain face up)
-    //if no match - wait one second and flip back to face down
   }
 
   function handleClick(Event) {
