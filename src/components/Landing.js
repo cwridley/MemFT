@@ -52,11 +52,10 @@ export default function Landing(props) {
         front: false,
         img: `/images/${i % 7}.png`,
         match: false,
+        memory: false,
       };
     });
   });
-
-  const [memory, setMemory] = React.useState([]);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -79,25 +78,76 @@ export default function Landing(props) {
   }
 
   function playGame(cards) {
-    const remains = [];
-    for (let i = 0; i < cards.length; i++) {
-      let card = cards[i];
-      if (!card.match) {
-        remains.push(card);
-      }
-    }
-    const cardsLeft = remains.length;
+    // cards that do not yet have a match
+    const unseen = cards.filter((card) => !card.match && !card.memory);
+    const seen = cards.filter((card) => !card.match && card.memory);
+    const picks = [1, 2];
+
+    // if all cards have a match stop playing games
+    const cardsLeft = unseen.length + seen.length;
     if (cardsLeft === 0) return;
 
-    //for the cards that don't have a match pick 2
-    const picks = [];
-    do {
-      for (let i = 0; i < 2; i++) {
-        picks[i] = remains[Math.floor(Math.random() * cardsLeft)];
-      }
-    } while (picks[0] === picks[1]);
+    if (seen.length === 0) {
+      picks[0] = unseen[Math.floor(Math.random() * unseen.length)];
+      do {
+        picks[1] = unseen[Math.floor(Math.random() * unseen.length)];
+      } while (picks[0] === picks[1]);
+    }
 
-    //set state so that the two pick are face up
+    // check for pairs in cards we have already seen
+    if (seen.length > 0) {
+      let memoryMatch = "";
+      const memory = [];
+      for (let i = 0; i < seen.length; i++) {
+        if (memory.includes(seen[i].matchId)) {
+          memoryMatch = seen[i].matchId;
+        } else {
+          memory.push(seen[i].matchId);
+        }
+      }
+
+      if (memoryMatch) {
+        setCards((oldCards) => {
+          return oldCards.map((card) => {
+            if (card.matchId == memoryMatch) {
+              return { ...card, front: true, match: true };
+            } else {
+              return { ...card };
+            }
+          });
+        });
+        // if two cards are picked from memory end turn
+        return;
+      } else {
+        // pick a random unseen card
+        picks[0] = unseen[Math.floor(Math.random() * unseen.length)];
+
+        // check seen cards for the matching pair
+        for (let i = 0; i < seen.length; i++) {
+          if (picks[0].matchId === seen[i].matchId) {
+            memoryMatch = picks[0].matchId;
+            // if we find a match we will set state with the found match
+            setCards((oldCards) => {
+              return oldCards.map((card) => {
+                if (card.matchId == memoryMatch) {
+                  return { ...card, front: true, match: true };
+                } else {
+                  return { ...card };
+                }
+              });
+            });
+            // if we have a match in memory end turn
+            return;
+          }
+        }
+
+        // if no match is found in memory pick a second card from unseen list
+        do {
+          picks[1] = unseen[Math.floor(Math.random() * unseen.length)];
+        } while (picks[0] === picks[1]);
+      }
+    }
+    //set state picking two random, unseen cards
     setCards((oldCards) => {
       return oldCards.map((card) => {
         return {
@@ -111,6 +161,10 @@ export default function Landing(props) {
             picks[0].matchId === picks[1].matchId
               ? !card.match
               : card.match,
+          memory:
+            card.id === picks[0].id || card.id === picks[1].id
+              ? true
+              : card.memory,
         };
       });
     });
