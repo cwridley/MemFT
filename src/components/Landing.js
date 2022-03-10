@@ -96,7 +96,7 @@ export default function Landing(props) {
 
     // check for pairs in cards we have already seen
     if (seen.length > 0) {
-      let memoryMatch = "";
+      let memoryMatch = false;
       const memory = [];
       for (let i = 0; i < seen.length; i++) {
         if (memory.includes(seen[i].matchId)) {
@@ -106,7 +106,7 @@ export default function Landing(props) {
         }
       }
 
-      if (memoryMatch) {
+      if (memoryMatch !== false) {
         setCards((oldCards) => {
           return oldCards.map((card) => {
             if (card.matchId == memoryMatch) {
