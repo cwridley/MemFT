@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import Cards from "./Cards.js";
+import LandingCards from "./Cards.js";
 
 const LandingGrid = styled.div`
   display: grid;
@@ -185,7 +185,7 @@ export default function Landing(props) {
 
   return (
     <LandingGrid>
-      <Cards cards={cards} handleClick={handleClick} />
+      <LandingCards cards={cards} handleClick={handleClick} />
       <Land key="land">
         <h1>MemFT</h1>
         <h2>A memory game with your favorite NFT collections</h2>
