@@ -5,14 +5,14 @@ const CardContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 3rem;
+  font-size: 4rem;
   color: #b0b0b0;
-  background-color: #222222;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   height: 25rem;
   width: 20rem;
   border-radius: 2rem;
   margin: auto;
+  background-image: url("/images/endless-constellation.svg");
 
   ${(props) =>
     (props.front || props.match) &&
@@ -22,7 +22,7 @@ const CardContainer = styled.div`
       background-repeat: no-repeat;
       background-position: center;
       background-size: contain;
-    `}
+    `};
 `;
 export default function Card(props) {
   return (

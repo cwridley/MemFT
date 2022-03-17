@@ -5,8 +5,7 @@ import GameForm from "./components/GameForm.js";
 
 const AppContainer = styled.div`
   display: flex;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
   justify-content: center;
   align-items: center;
 `;
@@ -14,7 +13,7 @@ const AppContainer = styled.div`
 export default function App() {
   const [landing, setLanding] = React.useState(true);
   const [gameOptions, setGameOptions] = React.useState({
-    formActive: false,
+    formActive: true,
     cardCount: 0,
     nftProject: "",
   });
@@ -27,15 +26,17 @@ export default function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const { cardCount, nftProject } = event.target;
-    console.log(cardCount.value, nftProject.value);
+    setGameOptions({ formActive: false, cardCount, nftProject });
   };
 
   return (
     <AppContainer className="App">
       {landing ? (
         <Landing handleLanding={handleLanding} />
-      ) : (
+      ) : gameOptions.formActive ? (
         <GameForm handleSubmit={handleSubmit} />
+      ) : (
+        "" //this is where we will render the cards
       )}
     </AppContainer>
   );

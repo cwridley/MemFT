@@ -37,8 +37,8 @@ const Land = styled.div`
     padding: 2rem;
     border-radius: 3rem;
     border: none;
-    background-color: #222222;
-    color: lightgray;
+    background-color: #620062;
+    color: white;
     margin: 3rem;
   }
 `;
