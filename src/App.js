@@ -10,6 +10,46 @@ const AppContainer = styled.div`
   align-items: center;
 `;
 
+const GameContiner = styled.div`
+  font-size: 10rem;
+
+  ${(props) =>
+    props.cardCount == 12 &&
+    css`
+      display: grid;
+      align-items: center;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      height: 100vh;
+      width: 100vw;
+      overflow: none;
+    `}
+
+  ${(props) =>
+    props.cardCount == 24 &&
+    css`
+      display: grid;
+      align-items: center;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      height: 100vh;
+      width: 100vw;
+      overflow: none;
+    `}
+    
+  ${(props) =>
+    props.cardCount == 36 &&
+    css`
+      display: grid;
+      align-items: center;
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      height: 100vh;
+      width: 100vw;
+      overflow: none;
+    `}
+`;
+
 export default function App() {
   const [landing, setLanding] = React.useState(true);
   const [gameOptions, setGameOptions] = React.useState({
@@ -26,7 +66,11 @@ export default function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const { cardCount, nftProject } = event.target;
-    setGameOptions({ formActive: false, cardCount, nftProject });
+    setGameOptions({
+      formActive: false,
+      cardCount: cardCount.value,
+      nftProject: nftProject.value,
+    });
   };
 
   return (
@@ -36,7 +80,7 @@ export default function App() {
       ) : gameOptions.formActive ? (
         <GameForm handleSubmit={handleSubmit} />
       ) : (
-        "" //this is where we will render the cards
+        <GameContiner cardCount={gameOptions.cardCount}></GameContiner>
       )}
     </AppContainer>
   );

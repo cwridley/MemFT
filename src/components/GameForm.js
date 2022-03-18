@@ -30,8 +30,9 @@ export default function GameForm(props) {
     <StartForm onSubmit={props.handleSubmit}>
       <label htmlFor="cardCount">Pick the number of cards to play with.</label>
       <select name="cardCount" id="cardCount">
-        <option value={8}>8 Cards</option>
-        <option value={16}>16 Cards</option>
+        <option value={12}>12 Cards</option>
+        <option value={24}>24 Cards</option>
+        <option value={32}>32 Cards</option>
       </select>
       <label htmlFor="nftProject">Which NFT project do you want to use?</label>
       <select name="nftProject" id="nftProject">
